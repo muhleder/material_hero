@@ -174,18 +174,9 @@ extension BuildContextExtensions on BuildContext {
     return elem?.widget as T?;
   }
 
-  CardHeroScopeState getCardHeroScopeState() {
+  CardHeroScopeState? getCardHeroScopeState() {
     final inheritedState = getInheritedWidget<_InheritedCardHeroScopeState>();
-    assert(() {
-      if (inheritedState == null) {
-        throw FlutterError('No CardHeroScope for a CardHero\n'
-            'When creating a CardHero, you must ensure that there\n'
-            'is a CardHeroScope above the CardHero.\n');
-      }
-      return true;
-    }());
-
-    return inheritedState!.state;
+    return inheritedState?.state;
   }
 }
 

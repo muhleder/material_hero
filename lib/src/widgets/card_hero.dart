@@ -59,25 +59,27 @@ class CardHero extends StatefulWidget {
 }
 
 class CardHeroState extends State<CardHero> with SingleTickerProviderStateMixin<CardHero> {
-  late CardHeroController controller;
-  late CardHeroScopeState scopeState;
+  CardHeroController? controller;
+  CardHeroScopeState? scopeState;
 
   @override
   void initState() {
-    super.initState();
     scopeState = context.getCardHeroScopeState();
-    controller = scopeState.track(context, widget);
+    controller = scopeState?.track(context, widget);
+    super.initState();
   }
 
   @override
   void dispose() {
-    scopeState.untrack(widget);
+    scopeState?.untrack(widget);
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.enabled
+    CardHeroController? controller = this.controller;
+    // If the CardHero itself is in an overlay then there will be no parent LocalHeroScope and no controller.
+    return widget.enabled && controller != null
         ? CardHeroLeader(
             controller: controller,
             child: CardDecoration(
