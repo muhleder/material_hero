@@ -17,7 +17,7 @@ class CardHeroController {
     required this.curve,
     required this.createRectTween,
     required this.tag,
-  })   : link = LayerLink(),
+  })  : link = LayerLink(),
         _vsync = vsync,
         _initialDuration = duration;
 
@@ -26,9 +26,7 @@ class CardHeroController {
   final LayerLink link;
   final TickerProvider _vsync;
   final Duration _initialDuration;
-  late final AnimationController _controller =
-      AnimationController(vsync: _vsync, duration: _initialDuration)
-        ..addStatusListener(_onAnimationStatusChanged);
+  late final AnimationController _controller = AnimationController(vsync: _vsync, duration: _initialDuration)..addStatusListener(_onAnimationStatusChanged);
   Animation<Rect?>? _animation;
   Rect? _lastRect;
 
@@ -99,8 +97,7 @@ class CardHeroController {
         });
       } else {
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          final Duration duration =
-              _controller.duration! * (1 - _controller.value);
+          final Duration duration = _controller.duration! * (1 - _controller.value);
           _controller.reset();
           _controller.animateTo(
             1,
