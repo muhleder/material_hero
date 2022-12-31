@@ -28,8 +28,7 @@ class RenderCardHeroLeaderLayer extends RenderProxyBox {
   }
 
   void _onAnimationStatusChanged(AnimationStatus status) {
-    if (status == AnimationStatus.completed ||
-        status == AnimationStatus.dismissed) {
+    if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
       final bool debugDisposed = child?.debugDisposed ?? true;
       if (!debugDisposed) markNeedsPaint();
     }
@@ -40,8 +39,7 @@ class RenderCardHeroLeaderLayer extends RenderProxyBox {
 
   @override
   bool hitTest(BoxHitTestResult result, {Offset? position}) {
-    return !controller.isAnimating &&
-        super.hitTest(result, position: position!);
+    return !controller.isAnimating && super.hitTest(result, position: position!);
   }
 
   @override
@@ -60,10 +58,7 @@ class RenderCardHeroLeaderLayer extends RenderProxyBox {
 
     // We need to hide the leader when the controller is animating if we just
     // changed of position.
-    final painter = controller.isAnimating
-        ? (PaintingContext context, Offset offset) =>
-            context.pushOpacity(offset, 0, super.paint)
-        : super.paint;
+    final painter = controller.isAnimating ? (PaintingContext context, Offset offset) => context.pushOpacity(offset, 0, super.paint) : super.paint;
 
     context.pushLayer(layer!, painter, Offset.zero);
 
@@ -143,9 +138,7 @@ class RenderCardHeroFollowerLayer extends RenderProxyBox {
   @override
   void performLayout() {
     final Size? requestedSize = controller.linkedSize;
-    final BoxConstraints childConstraints = requestedSize == null
-        ? constraints
-        : constraints.enforce(BoxConstraints.tight(requestedSize));
+    final BoxConstraints childConstraints = requestedSize == null ? constraints : constraints.enforce(BoxConstraints.tight(requestedSize));
     child!.layout(childConstraints, parentUsesSize: true);
     size = constraints.constrain(child!.size);
   }
