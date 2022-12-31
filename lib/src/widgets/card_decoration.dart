@@ -19,7 +19,7 @@ class CardDecoration extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return Material(
       key: ValueKey(animationValue),
       shape: shape,
       color: color,
