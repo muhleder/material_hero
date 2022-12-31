@@ -44,8 +44,10 @@ class RenderCardHeroLeaderLayer extends RenderProxyBox {
 
   @override
   void paint(PaintingContext context, Offset offset) {
-    final Rect rect = Rect.fromPoints(offset, size.bottomRight(offset));
-    _controller.animateIfNeeded(rect);
+    final Offset globalTopLeft = localToGlobal(paintBounds.topLeft);
+    final Offset globalBottomRight = localToGlobal(paintBounds.bottomRight);
+    final Rect globalRect = Rect.fromPoints(globalTopLeft, globalBottomRight);
+    _controller.animateIfNeeded(globalRect);
 
     if (layer == null) {
       layer = LeaderLayer(link: controller.link, offset: offset);
