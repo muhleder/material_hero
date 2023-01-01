@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 
+import '../rendering/controller.dart';
 import 'card_hero.dart';
 import 'card_hero_scope.dart';
 
@@ -10,8 +11,10 @@ class ShuttleWrapper extends StatefulWidget {
     required this.shuttleBuilder,
     required this.type,
     required this.child,
+    required this.controller,
   });
   final Animation<double> animation;
+  final CardHeroController controller;
   final ShuttleType type;
   final ShuttleBuilder shuttleBuilder;
   final Widget child;
@@ -53,6 +56,6 @@ class _ShuttleWrapperState extends State<ShuttleWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.shuttleBuilder(context, widget.child, animationValue);
+    return widget.shuttleBuilder(context, widget.child, animationValue, widget.controller);
   }
 }

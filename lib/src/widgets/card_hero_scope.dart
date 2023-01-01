@@ -66,7 +66,15 @@ class CardHeroScopeState extends State<CardHeroScope> with TickerProviderStateMi
     );
     final ShuttleBuilder? shuttleBuilder = cardHero.shuttleBuilder;
 
-    final Widget shuttle = (shuttleBuilder != null) ? ShuttleWrapper(animation: controller.view, shuttleBuilder: shuttleBuilder, type: ShuttleType.from, child: cardHero.child) : cardHero.child;
+    final Widget shuttle = (shuttleBuilder != null)
+        ? ShuttleWrapper(
+            animation: controller.view,
+            controller: controller,
+            shuttleBuilder: shuttleBuilder,
+            type: ShuttleType.from,
+            child: cardHero.child,
+          )
+        : cardHero.child;
 
     final OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
       return CardHeroFollower(
@@ -93,9 +101,24 @@ class CardHeroScopeState extends State<CardHeroScope> with TickerProviderStateMi
     final CardHeroController controller = tracker.controller;
     final ShuttleBuilder? fromShuttleBuilder = lastCardHero.shuttleBuilder;
     final ShuttleBuilder? toShuttleBuilder = cardHero.shuttleBuilder;
-    final Widget fromShuttle =
-        (fromShuttleBuilder != null) ? ShuttleWrapper(animation: controller.view, shuttleBuilder: fromShuttleBuilder, type: ShuttleType.from, child: lastCardHero.child) : lastCardHero.child;
-    final Widget toShuttle = (toShuttleBuilder != null) ? ShuttleWrapper(animation: controller.view, shuttleBuilder: toShuttleBuilder, type: ShuttleType.to, child: cardHero.child) : cardHero.child;
+    final Widget fromShuttle = (fromShuttleBuilder != null)
+        ? ShuttleWrapper(
+            animation: controller.view,
+            controller: controller,
+            shuttleBuilder: fromShuttleBuilder,
+            type: ShuttleType.from,
+            child: lastCardHero.child,
+          )
+        : lastCardHero.child;
+    final Widget toShuttle = (toShuttleBuilder != null)
+        ? ShuttleWrapper(
+            animation: controller.view,
+            controller: controller,
+            shuttleBuilder: toShuttleBuilder,
+            type: ShuttleType.to,
+            child: cardHero.child,
+          )
+        : cardHero.child;
 
     controller.removeListeners();
 

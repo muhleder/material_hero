@@ -4,9 +4,9 @@ import 'card_hero_layer.dart';
 import 'card_hero_scope.dart';
 import 'card_decoration.dart';
 
-/// Simplified shuttle builder, passed the child of the LocalHere, and an animation
-/// value which animates from 0 to 1 through the transition.
-typedef ShuttleBuilder = Widget Function(BuildContext context, Widget child, double value);
+/// Simplified shuttle builder, passed the child of the LocalHero, an animation
+/// value which animates from 0 to 1 through the transition, and the animation controller.
+typedef ShuttleBuilder = Widget Function(BuildContext context, Widget child, double value, CardHeroController controller);
 
 /// Mark its child as a candidate for container transform animation.
 ///

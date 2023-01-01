@@ -4,8 +4,6 @@ import 'package:flutter/animation.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
-// ignore_for_file: public_member_api_docs
-
 /// Signature for a function that takes two [Rect] instances and returns a
 /// [RectTween] that transitions between them.
 typedef RectTweenSupplier = Tween<Rect?> Function(Rect begin, Rect end);
@@ -29,6 +27,12 @@ class CardHeroController {
   late final AnimationController _controller = AnimationController(vsync: _vsync, duration: _initialDuration)..addStatusListener(_onAnimationStatusChanged);
   Animation<Rect?>? _animation;
   Rect? _lastRect;
+
+  /// When animating, this is the rect that the animation is animating from.
+  Rect? fromRect;
+
+  /// When animating, this is the rect that the animation is animating to.
+  Rect? toRect;
 
   Curve curve;
   RectTweenSupplier createRectTween;
@@ -77,6 +81,8 @@ class CardHeroController {
           currentRect.height,
         );
       }
+      fromRect = from;
+      toRect = rect;
       _isAnimating = true;
 
       _animation = _controller.drive(CurveTween(curve: curve)).drive(
