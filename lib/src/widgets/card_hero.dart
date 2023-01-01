@@ -21,7 +21,8 @@ class CardHero extends StatefulWidget {
   /// If between two frames, the position of a [CardHero] with the same tag
   /// changes, a container transform animation will be triggered.
   const CardHero({
-    Key? key,
+    // key is required otherwise from and to CardHeros get mixed up during animation.
+    required super.key,
     required this.tag,
     this.shuttleBuilder,
     this.enabled = true,
@@ -29,7 +30,7 @@ class CardHero extends StatefulWidget {
     this.shape = const RoundedRectangleBorder(),
     this.color = Colors.transparent,
     this.elevation = 0,
-  }) : super(key: key);
+  });
 
   /// The identifier for this particular container transform. This tag must be unique
   /// under the same [CardHeroScope].
