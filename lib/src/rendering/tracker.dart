@@ -1,24 +1,24 @@
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
 
-import '../widgets/card_hero.dart';
-import '../widgets/card_hero_layer.dart';
-import '../widgets/card_decoration.dart';
+import '../widgets/material_hero.dart';
+import '../widgets/material_hero_layer.dart';
+import '../widgets/material_decoration.dart';
 import 'controller.dart';
 
-class CardHeroTracker {
-  CardHeroTracker({
+class MaterialHeroTracker {
+  MaterialHeroTracker({
     required this.overlayEntry,
     required this.controller,
-    required this.lastCardHero,
+    required this.lastMaterialHero,
   }) {
     controller.animationStatusStream.listen(_onAnimationStatusChange);
   }
 
   OverlayEntry overlayEntry;
   OverlayState? overlayState;
-  final CardHeroController controller;
-  CardHero lastCardHero;
+  final MaterialHeroController controller;
+  MaterialHero lastMaterialHero;
   int count = 0;
 
   bool _removeRequested = false;
@@ -51,16 +51,16 @@ class CardHeroTracker {
     if (status == AnimationStatus.completed) {
       removeOverlay();
       final OverlayEntry childEntry = OverlayEntry(builder: (context) {
-        return CardHeroFollower(
+        return MaterialHeroFollower(
           controller: controller,
-          from: lastCardHero.child,
-          fromCardHero: lastCardHero,
-          toCardHero: lastCardHero,
-          to: CardDecoration(
-            color: lastCardHero.color,
-            elevation: lastCardHero.elevation,
-            shape: lastCardHero.shape,
-            child: lastCardHero.child,
+          from: lastMaterialHero.child,
+          fromMaterialHero: lastMaterialHero,
+          toMaterialHero: lastMaterialHero,
+          to: MaterialDecoration(
+            color: lastMaterialHero.color,
+            elevation: lastMaterialHero.elevation,
+            shape: lastMaterialHero.shapeBorder,
+            child: lastMaterialHero.child,
           ),
         );
       });

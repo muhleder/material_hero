@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'card_hero.dart';
+import 'material_hero.dart';
 
-class CardDecoration extends StatelessWidget {
-  const CardDecoration({
+class MaterialDecoration extends StatelessWidget {
+  const MaterialDecoration({
     super.key,
     required this.color,
     required this.elevation,
@@ -20,7 +20,8 @@ class CardDecoration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      key: ValueKey(animationValue),
+      type: MaterialType.card,
+      key: ValueKey(animationValue), // key is needed or elevation property does not update during.
       shape: shape,
       color: color,
       elevation: elevation,
@@ -29,8 +30,8 @@ class CardDecoration extends StatelessWidget {
   }
 }
 
-class CardDecorationAnimator extends StatelessWidget {
-  CardDecorationAnimator({
+class MaterialDecorationAnimator extends StatelessWidget {
+  MaterialDecorationAnimator({
     super.key,
     required this.animation,
     required this.fromHero,
@@ -39,14 +40,14 @@ class CardDecorationAnimator extends StatelessWidget {
     required this.to,
   })  : colorTween = ColorTween(end: toHero.color, begin: fromHero.color),
         elevationTween = Tween<double>(begin: fromHero.elevation, end: toHero.elevation),
-        shapeTween = ShapeBorderTween(begin: fromHero.shape, end: toHero.shape);
+        shapeBorderTween = ShapeBorderTween(begin: fromHero.shapeBorder, end: toHero.shapeBorder);
   final Animation<double> animation;
-  final CardHero fromHero;
-  final CardHero toHero;
+  final MaterialHero fromHero;
+  final MaterialHero toHero;
   final Widget from;
   final Widget to;
   final ColorTween colorTween;
-  final ShapeBorderTween shapeTween;
+  final ShapeBorderTween shapeBorderTween;
   final Tween<double> elevationTween;
 
   @override
@@ -58,10 +59,10 @@ class CardDecorationAnimator extends StatelessWidget {
           children: [to, from],
         ),
         builder: (context, child) {
-          return CardDecoration(
+          return MaterialDecoration(
             color: colorTween.evaluate(animation) ?? Colors.transparent,
             elevation: elevationTween.evaluate(animation),
-            shape: shapeTween.evaluate(animation) ?? const RoundedRectangleBorder(),
+            shape: shapeBorderTween.evaluate(animation) ?? const RoundedRectangleBorder(),
             animationValue: animation.value,
             child: child,
           );

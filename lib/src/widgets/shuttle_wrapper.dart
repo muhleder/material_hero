@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 
 import '../rendering/controller.dart';
-import 'card_hero.dart';
-import 'card_hero_scope.dart';
+import 'material_hero.dart';
+import 'material_hero_scope.dart';
 
 class ShuttleWrapper extends StatefulWidget {
   const ShuttleWrapper({
@@ -14,7 +14,7 @@ class ShuttleWrapper extends StatefulWidget {
     required this.controller,
   });
   final Animation<double> animation;
-  final CardHeroController controller;
+  final MaterialHeroController controller;
   final ShuttleType type;
   final ShuttleBuilder shuttleBuilder;
   final Widget child;
@@ -56,6 +56,6 @@ class _ShuttleWrapperState extends State<ShuttleWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.shuttleBuilder(context, widget.child, animationValue, widget.controller);
+    return widget.shuttleBuilder(context, widget.child, animationValue, widget.controller, widget.type);
   }
 }

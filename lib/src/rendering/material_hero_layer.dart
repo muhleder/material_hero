@@ -5,20 +5,20 @@ import '../rendering/layer.dart';
 
 // ignore_for_file: public_member_api_docs
 
-class RenderCardHeroLeaderLayer extends RenderProxyBox {
+class RenderMaterialHeroLeaderLayer extends RenderProxyBox {
   /// Creates a render object that uses a [LeaderLayer].
   ///
   /// The [controller] must not be null.
-  RenderCardHeroLeaderLayer({
-    required CardHeroController controller,
+  RenderMaterialHeroLeaderLayer({
+    required MaterialHeroController controller,
     RenderBox? child,
   }) : super(child) {
     _controller = controller..addStatusListener(_onAnimationStatusChanged);
   }
 
-  CardHeroController get controller => _controller;
-  late CardHeroController _controller;
-  set controller(CardHeroController value) {
+  MaterialHeroController get controller => _controller;
+  late MaterialHeroController _controller;
+  set controller(MaterialHeroController value) {
     if (_controller != value) {
       _controller.removeStatusListener(_onAnimationStatusChanged);
       _controller = value;
@@ -78,22 +78,22 @@ class RenderCardHeroLeaderLayer extends RenderProxyBox {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(
-      DiagnosticsProperty<CardHeroController>('controller', controller),
+      DiagnosticsProperty<MaterialHeroController>('controller', controller),
     );
   }
 }
 
-class RenderCardHeroFollowerLayer extends RenderProxyBox {
-  RenderCardHeroFollowerLayer({
-    required CardHeroController controller,
+class RenderMaterialHeroFollowerLayer extends RenderProxyBox {
+  RenderMaterialHeroFollowerLayer({
+    required MaterialHeroController controller,
     RenderBox? child,
   }) : super(child) {
     _controller = controller..addListener(markNeedsLayout);
   }
 
-  CardHeroController get controller => _controller;
-  late CardHeroController _controller;
-  set controller(CardHeroController value) {
+  MaterialHeroController get controller => _controller;
+  late MaterialHeroController _controller;
+  set controller(MaterialHeroController value) {
     if (_controller != value) {
       _controller.removeListener(markNeedsLayout);
       _controller = value;
@@ -119,7 +119,7 @@ class RenderCardHeroFollowerLayer extends RenderProxyBox {
 
   /// The layer we created when we were last painted.
   @override
-  CardHeroLayer? get layer => super.layer as CardHeroLayer?;
+  MaterialHeroLayer? get layer => super.layer as MaterialHeroLayer?;
 
   /// Return the transform that was used in the last composition phase, if any.
   ///
@@ -148,7 +148,7 @@ class RenderCardHeroFollowerLayer extends RenderProxyBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     if (layer == null) {
-      layer = CardHeroLayer(controller: controller);
+      layer = MaterialHeroLayer(controller: controller);
     } else {
       layer!.controller = controller;
     }
@@ -182,7 +182,7 @@ class RenderCardHeroFollowerLayer extends RenderProxyBox {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<CardHeroController>(
+    properties.add(DiagnosticsProperty<MaterialHeroController>(
       'controller',
       controller,
     ));

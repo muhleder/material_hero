@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../rendering/controller.dart';
-import 'card_hero_layer.dart';
-import 'card_hero_scope.dart';
-import 'card_decoration.dart';
+import 'material_hero_layer.dart';
+import 'material_hero_scope.dart';
+import 'material_decoration.dart';
 
 /// Simplified shuttle builder, passed the child of the LocalHero, an animation
 /// value which animates from 0 to 1 through the transition, and the animation controller.
-typedef ShuttleBuilder = Widget Function(BuildContext context, Widget child, double value, CardHeroController controller);
+typedef ShuttleBuilder = Widget Function(BuildContext context, Widget child, double value, MaterialHeroController controller, ShuttleType type);
 
 /// Mark its child as a candidate for container transform animation.
 ///
@@ -15,26 +15,26 @@ typedef ShuttleBuilder = Widget Function(BuildContext context, Widget child, dou
 ///
 /// You'll have to use a [Key] in the top most parent in your container in order
 /// to explicitly tell the framework to preserve the state of your children.
-class CardHero extends StatefulWidget {
-  /// Creates a [CardHero].
+class MaterialHero extends StatefulWidget {
+  /// Creates a [MaterialHero].
   ///
-  /// If between two frames, the position of a [CardHero] with the same tag
+  /// If between two frames, the position of a [MaterialHero] with the same tag
   /// changes, a container transform animation will be triggered.
-  CardHero({
-    // key is required otherwise from and to CardHeros get mixed up during animation.
+  MaterialHero({
+    // key is required otherwise from and to MaterialHeros get mixed up during animation.
     Key? key,
     required this.tag,
-    this.shuttleBuilder,
+    this.shuttleBuilder = fadeThroughShuttleWrapper,
     this.enabled = true,
     required this.child,
-    this.shape = const RoundedRectangleBorder(),
+    this.shapeBorder = const RoundedRectangleBorder(),
     this.color = Colors.transparent,
     this.elevation = 0,
-  }): super(key: key ?? UniqueKey());
+  }) : super(key: key ?? UniqueKey());
 
   /// The identifier for this particular container transform. This tag must be unique
-  /// under the same [CardHeroScope].
-  /// If between two frames, the position of a [CardHero] with the same tag
+  /// under the same [MaterialHeroScope].
+  /// If between two frames, the position of a [MaterialHero] with the same tag
   /// changes, a container transform animation will be triggered.
   final Object tag;
 
@@ -43,7 +43,7 @@ class CardHero extends StatefulWidget {
 
   final Color color;
 
-  final ShapeBorder shape;
+  final ShapeBorder shapeBorder;
 
   final double elevation;
 
@@ -56,16 +56,16 @@ class CardHero extends StatefulWidget {
   final Widget child;
 
   @override
-  CardHeroState createState() => CardHeroState();
+  MaterialHeroState createState() => MaterialHeroState();
 }
 
-class CardHeroState extends State<CardHero> with SingleTickerProviderStateMixin<CardHero> {
-  CardHeroController? controller;
-  CardHeroScopeState? scopeState;
+class MaterialHeroState extends State<MaterialHero> with SingleTickerProviderStateMixin<MaterialHero> {
+  MaterialHeroController? controller;
+  MaterialHeroScopeState? scopeState;
 
   @override
   void initState() {
-    scopeState = context.getCardHeroScopeState();
+    scopeState = context.getMaterialHeroScopeState();
     controller = scopeState?.track(context, widget);
     super.initState();
   }
@@ -78,23 +78,33 @@ class CardHeroState extends State<CardHero> with SingleTickerProviderStateMixin<
 
   @override
   Widget build(BuildContext context) {
-    CardHeroController? controller = this.controller;
-    // If the CardHero itself is in an overlay then there will be no parent LocalHeroScope and no controller.
+    MaterialHeroController? controller = this.controller;
+    // If the MaterialHero itself is in an overlay then there will be no parent LocalHeroScope and no controller.
     return widget.enabled && controller != null
-        ? CardHeroLeader(
+        ? MaterialHeroLeader(
             controller: controller,
-            child: CardDecoration(
+            child: MaterialDecoration(
               color: widget.color,
               elevation: widget.elevation,
-              shape: widget.shape,
+              shape: widget.shapeBorder,
               child: widget.child,
             ),
           )
-        : CardDecoration(
+        : MaterialDecoration(
             color: widget.color,
             elevation: widget.elevation,
-            shape: widget.shape,
+            shape: widget.shapeBorder,
             child: widget.child,
           );
   }
+}
+
+Widget fadeThroughShuttleWrapper(BuildContext context, Widget child, double value, __, _) {
+  return FittedBox(
+    fit: BoxFit.fitWidth,
+    child: Opacity(
+      opacity: value,
+      child: child,
+    ),
+  );
 }

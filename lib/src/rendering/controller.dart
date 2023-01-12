@@ -8,8 +8,8 @@ import 'package:flutter/scheduler.dart';
 /// [RectTween] that transitions between them.
 typedef RectTweenSupplier = Tween<Rect?> Function(Rect begin, Rect end);
 
-class CardHeroController {
-  CardHeroController({
+class MaterialHeroController {
+  MaterialHeroController({
     required TickerProvider vsync,
     required Duration duration,
     required this.curve,

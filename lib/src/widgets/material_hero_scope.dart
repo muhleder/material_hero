@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import '../rendering/controller.dart';
 import '../rendering/tracker.dart';
-import 'card_hero.dart';
-import 'card_hero_layer.dart';
+import 'material_hero.dart';
+import 'material_hero_layer.dart';
 import 'shuttle_wrapper.dart';
 
 // ignore_for_file: public_member_api_docs
 
-/// A widget under which you can create [CardHero] widgets.
-class CardHeroScope extends StatefulWidget {
-  /// Creates a [CardHeroScope].
+/// A widget under which you can create [MaterialHero] widgets.
+class MaterialHeroScope extends StatefulWidget {
+  /// Creates a [MaterialHeroScope].
   /// All container transform animations under this widget, will have the specified
   /// [duration], [curve], and [createRectTween].
-  const CardHeroScope({
+  const MaterialHeroScope({
     Key? key,
     this.duration = const Duration(milliseconds: 300),
-    this.curve = Curves.linear,
+    this.curve = Curves.easeInOut,
     this.createRectTween = _defaultCreateTweenRect,
     required this.child,
   }) : super(key: key);
@@ -38,33 +38,33 @@ class CardHeroScope extends StatefulWidget {
   final Widget child;
 
   @override
-  CardHeroScopeState createState() => CardHeroScopeState();
+  MaterialHeroScopeState createState() => MaterialHeroScopeState();
 }
 
-class CardHeroScopeState extends State<CardHeroScope> with TickerProviderStateMixin {
-  final Map<Object, CardHeroTracker> trackers = <Object, CardHeroTracker>{};
+class MaterialHeroScopeState extends State<MaterialHeroScope> with TickerProviderStateMixin {
+  final Map<Object, MaterialHeroTracker> trackers = <Object, MaterialHeroTracker>{};
 
-  CardHeroController track(BuildContext context, CardHero cardHero) {
-    CardHeroTracker? tracker = trackers[cardHero.tag];
+  MaterialHeroController track(BuildContext context, MaterialHero materialHero) {
+    MaterialHeroTracker? tracker = trackers[materialHero.tag];
     if (tracker == null) {
-      tracker = createTracker(context, cardHero);
-      trackers[cardHero.tag] = tracker;
+      tracker = createTracker(context, materialHero);
+      trackers[materialHero.tag] = tracker;
     } else {
-      updateTracker(context, cardHero, tracker);
+      updateTracker(context, materialHero, tracker);
     }
     tracker.count++;
     return tracker.controller;
   }
 
-  CardHeroTracker createTracker(BuildContext context, CardHero cardHero) {
-    final CardHeroController controller = CardHeroController(
+  MaterialHeroTracker createTracker(BuildContext context, MaterialHero materialHero) {
+    final MaterialHeroController controller = MaterialHeroController(
       duration: widget.duration,
       createRectTween: widget.createRectTween,
       curve: widget.curve,
-      tag: cardHero.tag,
+      tag: materialHero.tag,
       vsync: this,
     );
-    final ShuttleBuilder? shuttleBuilder = cardHero.shuttleBuilder;
+    final ShuttleBuilder? shuttleBuilder = materialHero.shuttleBuilder;
 
     final Widget shuttle = (shuttleBuilder != null)
         ? ShuttleWrapper(
@@ -72,78 +72,78 @@ class CardHeroScopeState extends State<CardHeroScope> with TickerProviderStateMi
             controller: controller,
             shuttleBuilder: shuttleBuilder,
             type: ShuttleType.from,
-            child: cardHero.child,
+            child: materialHero.child,
           )
-        : cardHero.child;
+        : materialHero.child;
 
     final OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
-      return CardHeroFollower(
+      return MaterialHeroFollower(
         controller: controller,
         from: shuttle,
         to: shuttle,
-        fromCardHero: cardHero,
-        toCardHero: cardHero,
+        fromMaterialHero: materialHero,
+        toMaterialHero: materialHero,
       );
     });
 
-    final CardHeroTracker tracker = CardHeroTracker(
+    final MaterialHeroTracker tracker = MaterialHeroTracker(
       controller: controller,
       overlayEntry: overlayEntry,
-      lastCardHero: cardHero,
+      lastMaterialHero: materialHero,
     );
 
     tracker.addOverlay(context);
     return tracker;
   }
 
-  void updateTracker(BuildContext context, CardHero cardHero, CardHeroTracker tracker) {
-    final CardHero lastCardHero = tracker.lastCardHero;
-    final CardHeroController controller = tracker.controller;
-    final ShuttleBuilder? fromShuttleBuilder = lastCardHero.shuttleBuilder;
-    final ShuttleBuilder? toShuttleBuilder = cardHero.shuttleBuilder;
+  void updateTracker(BuildContext context, MaterialHero materialHero, MaterialHeroTracker tracker) {
+    final MaterialHero lastMaterialHero = tracker.lastMaterialHero;
+    final MaterialHeroController controller = tracker.controller;
+    final ShuttleBuilder? fromShuttleBuilder = lastMaterialHero.shuttleBuilder;
+    final ShuttleBuilder? toShuttleBuilder = materialHero.shuttleBuilder;
     final Widget fromShuttle = (fromShuttleBuilder != null)
         ? ShuttleWrapper(
             animation: controller.view,
             controller: controller,
             shuttleBuilder: fromShuttleBuilder,
             type: ShuttleType.from,
-            child: lastCardHero.child,
+            child: lastMaterialHero.child,
           )
-        : lastCardHero.child;
+        : lastMaterialHero.child;
     final Widget toShuttle = (toShuttleBuilder != null)
         ? ShuttleWrapper(
             animation: controller.view,
             controller: controller,
             shuttleBuilder: toShuttleBuilder,
             type: ShuttleType.to,
-            child: cardHero.child,
+            child: materialHero.child,
           )
-        : cardHero.child;
+        : materialHero.child;
 
     controller.removeListeners();
 
     final OverlayEntry overlayEntry = OverlayEntry(builder: (context) {
-      return CardHeroFollower(
+      return MaterialHeroFollower(
         controller: controller,
         from: fromShuttle,
         to: toShuttle,
-        fromCardHero: lastCardHero,
-        toCardHero: cardHero,
+        fromMaterialHero: lastMaterialHero,
+        toMaterialHero: materialHero,
       );
     });
 
     tracker.removeOverlay();
     tracker.overlayEntry = overlayEntry;
     tracker.addOverlay(context);
-    tracker.lastCardHero = cardHero;
+    tracker.lastMaterialHero = materialHero;
   }
 
-  void untrack(CardHero cardHero) {
-    final CardHeroTracker? tracker = trackers[cardHero.tag];
+  void untrack(MaterialHero materialHero) {
+    final MaterialHeroTracker? tracker = trackers[materialHero.tag];
     if (tracker != null) {
       tracker.count--;
       if (tracker.count == 0) {
-        trackers.remove(cardHero.tag);
+        trackers.remove(materialHero.tag);
         disposeTracker(tracker);
       }
     }
@@ -155,37 +155,37 @@ class CardHeroScopeState extends State<CardHeroScope> with TickerProviderStateMi
     super.dispose();
   }
 
-  void disposeTracker(CardHeroTracker tracker) {
+  void disposeTracker(MaterialHeroTracker tracker) {
     tracker.controller.dispose();
     tracker.removeOverlay();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _InheritedCardHeroScopeState(
+    return _InheritedMaterialHeroScopeState(
       state: this,
       child: widget.child,
     );
   }
 }
 
-/// Whether the shuttle is animating [to] or [from] the CardHero widget.
+/// Whether the shuttle is animating [to] or [from] the MaterialHero widget.
 enum ShuttleType {
-  /// The shuttle is animating with this CardHero as a starting point.
+  /// The shuttle is animating with this MaterialHero as a starting point.
   from,
 
-  /// The shuttle is animating with this CardHero as an ending point.
+  /// The shuttle is animating with this MaterialHero as an ending point.
   to,
 }
 
-class _InheritedCardHeroScopeState extends InheritedWidget {
-  const _InheritedCardHeroScopeState({
+class _InheritedMaterialHeroScopeState extends InheritedWidget {
+  const _InheritedMaterialHeroScopeState({
     Key? key,
     required this.state,
     required Widget child,
   }) : super(key: key, child: child);
 
-  final CardHeroScopeState state;
+  final MaterialHeroScopeState state;
 
   @override
   bool updateShouldNotify(InheritedWidget oldWidget) => false;
@@ -197,8 +197,8 @@ extension BuildContextExtensions on BuildContext {
     return elem?.widget as T?;
   }
 
-  CardHeroScopeState? getCardHeroScopeState() {
-    final inheritedState = getInheritedWidget<_InheritedCardHeroScopeState>();
+  MaterialHeroScopeState? getMaterialHeroScopeState() {
+    final inheritedState = getInheritedWidget<_InheritedMaterialHeroScopeState>();
     return inheritedState?.state;
   }
 }

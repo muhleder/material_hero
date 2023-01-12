@@ -1,4 +1,4 @@
-# card_hero
+# material_hero
 
 A widget which allows basic container transform animations, without the limitiations of the OpenContainer widget in the animations package.
 
@@ -6,23 +6,23 @@ Based upon the local_hero package
 
 ## Usage
 
-To be animated implicitly, a widget needs to be surrounded by a `CardHero` widget with a unique `tag`:
+To be animated implicitly, a widget needs to be surrounded by a `MaterialHero` widget with a unique `tag`:
 
 ```dart
-const CardHero(
+const MaterialHero(
     tag: 'my_widget_tag',
     child: MyWidget(),
 ),
 ```
 
-A `CardHero` widget must have a `CardHeroScope` ancestor which hosts the animations properties (duration, curve, etc.).
-At each frame we must have only one `CardHero` per tag, per `CardHeroScope`.
+A `MaterialHero` widget must have a `MaterialHeroScope` ancestor which hosts the animations properties (duration, curve, etc.).
+At each frame we must have only one `MaterialHero` per tag, per `MaterialHeroScope`.
 
-The following example needs to be updated to show the basic usage of a `CardHero` widget:
+The following example needs to be updated to show the basic usage of a `MaterialHero` widget:
 
 ```dart
-class _CardHeroPage extends StatelessWidget {
-  const _CardHeroPage({
+class _MaterialHeroPage extends StatelessWidget {
+  const _MaterialHeroPage({
     Key key,
   }) : super(key: key);
 
@@ -30,26 +30,26 @@ class _CardHeroPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: CardHeroScope(
+        child: MaterialHeroScope(
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
-          child: const _CardHeroPlayground(),
+          child: const _MaterialHeroPlayground(),
         ),
       ),
     );
   }
 }
 
-class _CardHeroPlayground extends StatefulWidget {
-  const _CardHeroPlayground({
+class _MaterialHeroPlayground extends StatefulWidget {
+  const _MaterialHeroPlayground({
     Key key,
   }) : super(key: key);
 
   @override
-  _CardHeroPlaygroundState createState() => _CardHeroPlaygroundState();
+  _MaterialHeroPlaygroundState createState() => _MaterialHeroPlaygroundState();
 }
 
-class _CardHeroPlaygroundState extends State<_CardHeroPlayground> {
+class _MaterialHeroPlaygroundState extends State<_MaterialHeroPlayground> {
   AlignmentGeometry alignment = Alignment.topLeft;
 
   @override
@@ -61,7 +61,7 @@ class _CardHeroPlaygroundState extends State<_CardHeroPlayground> {
             padding: const EdgeInsets.all(8),
             child: Align(
               alignment: alignment,
-              child: const CardHero(
+              child: const MaterialHero(
                 tag: 'id',
                 child: _Box(),
               ),

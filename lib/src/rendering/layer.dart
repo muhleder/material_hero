@@ -7,11 +7,11 @@ import 'package:vector_math/vector_math_64.dart';
 
 // ignore_for_file: public_member_api_docs
 
-class CardHeroLayer extends ContainerLayer {
+class MaterialHeroLayer extends ContainerLayer {
   /// Creates a container transform layer.
   ///
   /// The [controller] property must not be null.
-  CardHeroLayer({
+  MaterialHeroLayer({
     required this.controller,
   });
 
@@ -21,7 +21,7 @@ class CardHeroLayer extends ContainerLayer {
   ///
   /// The scene must be explicitly recomposited after this property is changed
   /// (as described at [Layer]).
-  CardHeroController controller;
+  MaterialHeroController controller;
 
   Offset? _lastOffset;
   Matrix4? _lastTransform;
@@ -193,7 +193,7 @@ class CardHeroLayer extends ContainerLayer {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<CardHeroController>(
+    properties.add(DiagnosticsProperty<MaterialHeroController>(
       'controller',
       controller,
     ));
