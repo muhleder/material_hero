@@ -4,8 +4,8 @@ import 'material_hero_layer.dart';
 import 'material_hero_scope.dart';
 import 'material_decoration.dart';
 
-/// Simplified shuttle builder, passed the child of the LocalHero, an animation
-/// value which animates from 0 to 1 through the transition, and the animation controller.
+/// Simplified shuttle builder, passed the child of the MaterialHero, an animation
+/// value which animates from 0 to 1 through the transition, the animation controller, and the shuttle type.
 typedef ShuttleBuilder = Widget Function(BuildContext context, Widget child, double value, MaterialHeroController controller, ShuttleType type);
 
 /// Mark its child as a candidate for container transform animation.
@@ -119,7 +119,7 @@ class MaterialHeroWithContextState extends State<MaterialHeroWithContext> with S
   @override
   Widget build(BuildContext context) {
     MaterialHeroController? controller = this.controller;
-    // If the MaterialHero itself is in an overlay then there will be no parent LocalHeroScope and no controller.
+    // If the MaterialHero itself is in an overlay then there will be no parent MaterialHeroScope and no controller.
     return widget.enabled && controller != null
         ? MaterialHeroLeader(
             controller: controller,
@@ -139,7 +139,7 @@ class MaterialHeroWithContextState extends State<MaterialHeroWithContext> with S
   }
 }
 
-Widget fadeThroughShuttleWrapper(BuildContext context, Widget child, double value, __, _) {
+Widget fadeThroughShuttleWrapper(BuildContext context, Widget child, double value, MaterialHeroController controller, ShuttleType type) {
   return FittedBox(
     fit: BoxFit.fitWidth,
     child: Opacity(
