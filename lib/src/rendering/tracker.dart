@@ -18,7 +18,7 @@ class MaterialHeroTracker {
   OverlayEntry overlayEntry;
   OverlayState? overlayState;
   final MaterialHeroController controller;
-  MaterialHero lastMaterialHero;
+  MaterialHeroWithContext lastMaterialHero;
   int count = 0;
 
   bool _removeRequested = false;

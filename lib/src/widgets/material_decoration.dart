@@ -42,8 +42,8 @@ class MaterialDecorationAnimator extends StatelessWidget {
         elevationTween = Tween<double>(begin: fromHero.elevation, end: toHero.elevation),
         shapeBorderTween = ShapeBorderTween(begin: fromHero.shapeBorder, end: toHero.shapeBorder);
   final Animation<double> animation;
-  final MaterialHero fromHero;
-  final MaterialHero toHero;
+  final MaterialHeroWithContext fromHero;
+  final MaterialHeroWithContext toHero;
   final Widget from;
   final Widget to;
   final ColorTween colorTween;
@@ -56,7 +56,16 @@ class MaterialDecorationAnimator extends StatelessWidget {
         animation: animation,
         child: Stack(
           fit: StackFit.expand,
-          children: [to, from],
+          children: [
+            Theme(
+              data: toHero.theme,
+              child: to,
+            ),
+            Theme(
+              data: fromHero.theme,
+              child: from,
+            ),
+          ],
         ),
         builder: (context, child) {
           return MaterialDecoration(

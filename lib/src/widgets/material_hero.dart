@@ -15,13 +15,12 @@ typedef ShuttleBuilder = Widget Function(BuildContext context, Widget child, dou
 ///
 /// You'll have to use a [Key] in the top most parent in your container in order
 /// to explicitly tell the framework to preserve the state of your children.
-class MaterialHero extends StatefulWidget {
+class MaterialHero extends StatelessWidget {
   /// Creates a [MaterialHero].
   ///
   /// If between two frames, the position of a [MaterialHero] with the same tag
   /// changes, a container transform animation will be triggered.
   MaterialHero({
-    // key is required otherwise from and to MaterialHeros get mixed up during animation.
     Key? key,
     required this.tag,
     this.shuttleBuilder = fadeThroughShuttleWrapper,
@@ -56,10 +55,51 @@ class MaterialHero extends StatefulWidget {
   final Widget child;
 
   @override
-  MaterialHeroState createState() => MaterialHeroState();
+  Widget build(BuildContext context) {
+    return MaterialHeroWithContext(
+      key: key,
+      tag: tag,
+      color: color,
+      context: context,
+      elevation: elevation,
+      enabled: enabled,
+      shapeBorder: shapeBorder,
+      shuttleBuilder: shuttleBuilder,
+      child: child,
+    );
+  }
 }
 
-class MaterialHeroState extends State<MaterialHero> with SingleTickerProviderStateMixin<MaterialHero> {
+/// MaterialHeroWithContext is needed so that we can get the theme from the original context.
+/// Without the context theme the widget animated in the overlay will use Flutter's default theme.
+class MaterialHeroWithContext extends StatefulWidget {
+  MaterialHeroWithContext({
+    required Key? key,
+    required this.tag,
+    required this.shuttleBuilder,
+    required this.enabled,
+    required this.child,
+    required BuildContext context,
+    required this.shapeBorder,
+    required this.color,
+    required this.elevation,
+  })  : theme = Theme.of(context),
+        super(key: key ?? UniqueKey());
+
+  final Object tag;
+  final ShuttleBuilder? shuttleBuilder;
+  final Color color;
+  final ShapeBorder shapeBorder;
+  final ThemeData theme;
+  final double elevation;
+  final bool enabled;
+  final Widget child;
+
+  @override
+  MaterialHeroWithContextState createState() => MaterialHeroWithContextState();
+}
+
+class MaterialHeroWithContextState extends State<MaterialHeroWithContext> with SingleTickerProviderStateMixin<MaterialHeroWithContext> {
   MaterialHeroController? controller;
   MaterialHeroScopeState? scopeState;
 

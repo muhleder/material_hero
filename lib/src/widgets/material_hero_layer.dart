@@ -13,8 +13,8 @@ class MaterialHeroFollower extends SingleChildRenderObjectWidget {
     required this.controller,
     required Widget from,
     required Widget to,
-    required MaterialHero fromMaterialHero,
-    required MaterialHero toMaterialHero,
+    required MaterialHeroWithContext fromMaterialHero,
+    required MaterialHeroWithContext toMaterialHero,
   }) : super(
             key: key,
             child: MaterialDecorationAnimator(

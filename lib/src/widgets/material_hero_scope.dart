@@ -44,7 +44,7 @@ class MaterialHeroScope extends StatefulWidget {
 class MaterialHeroScopeState extends State<MaterialHeroScope> with TickerProviderStateMixin {
   final Map<Object, MaterialHeroTracker> trackers = <Object, MaterialHeroTracker>{};
 
-  MaterialHeroController track(BuildContext context, MaterialHero materialHero) {
+  MaterialHeroController track(BuildContext context, MaterialHeroWithContext materialHero) {
     MaterialHeroTracker? tracker = trackers[materialHero.tag];
     if (tracker == null) {
       tracker = createTracker(context, materialHero);
@@ -56,7 +56,7 @@ class MaterialHeroScopeState extends State<MaterialHeroScope> with TickerProvide
     return tracker.controller;
   }
 
-  MaterialHeroTracker createTracker(BuildContext context, MaterialHero materialHero) {
+  MaterialHeroTracker createTracker(BuildContext context, MaterialHeroWithContext materialHero) {
     final MaterialHeroController controller = MaterialHeroController(
       duration: widget.duration,
       createRectTween: widget.createRectTween,
@@ -96,8 +96,8 @@ class MaterialHeroScopeState extends State<MaterialHeroScope> with TickerProvide
     return tracker;
   }
 
-  void updateTracker(BuildContext context, MaterialHero materialHero, MaterialHeroTracker tracker) {
-    final MaterialHero lastMaterialHero = tracker.lastMaterialHero;
+  void updateTracker(BuildContext context, MaterialHeroWithContext materialHero, MaterialHeroTracker tracker) {
+    final MaterialHeroWithContext lastMaterialHero = tracker.lastMaterialHero;
     final MaterialHeroController controller = tracker.controller;
     final ShuttleBuilder? fromShuttleBuilder = lastMaterialHero.shuttleBuilder;
     final ShuttleBuilder? toShuttleBuilder = materialHero.shuttleBuilder;
@@ -138,7 +138,7 @@ class MaterialHeroScopeState extends State<MaterialHeroScope> with TickerProvide
     tracker.lastMaterialHero = materialHero;
   }
 
-  void untrack(MaterialHero materialHero) {
+  void untrack(MaterialHeroWithContext materialHero) {
     final MaterialHeroTracker? tracker = trackers[materialHero.tag];
     if (tracker != null) {
       tracker.count--;
