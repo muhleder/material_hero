@@ -1,6 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:material_hero/material_hero.dart';
-
 
 void main() async {
   runApp(const MaterialApp(
@@ -16,17 +17,14 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  bool active = false;
-
-  void getStarted() {
-    active = !active;
-    setState(() {});
-  }
+  bool clicked = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: MaterialHeroScope(
+        duration: const Duration(seconds: 1),
+        curve: Curves.linear,
         child: Align(
           alignment: Alignment.topLeft,
           child: SizedBox(
@@ -36,51 +34,49 @@ class MyAppState extends State<MyApp> {
               color: Colors.yellowAccent,
               child: Stack(
                 children: [
-                  Positioned(top: 0, left: 0, child: Text('Active is $active')),
-                  if (!active)
+                  Positioned(
+                    top: 0,
+                    left: 0,
+                    child: ElevatedButton(
+                      onPressed: () => setState(() => clicked = !clicked),
+                      child: Text('Clicked is $clicked'),
+                    ),
+                  ),
+                  if (!clicked)
                     Positioned(
                       top: 27,
                       left: 103,
                       child: MaterialHero(
-                        // enabled: false,
-                        key: const ValueKey('orange_box'),
-                        tag: 'promo',
-                        shuttleBuilder: (context, child, value, _, __) => Container(),
+                        tag: 'animals',
                         color: Colors.orangeAccent,
-                        child: DayPromo(active: active, getStarted: getStarted),
+                        child: Container(
+                          width: 100,
+                          height: 50,
+                          // color: Colors.black.withOpacity(0.2),
+                          child: AardvarkBox(),
+                        ),
                       ),
                     ),
-                  if (active)
-                    Positioned(
-                        top: 300,
-                        left: 300,
-                        child: MaterialHero(
-                          key: const ValueKey('purple'),
-                          tag: 'promo',
-                          color: Colors.deepPurpleAccent,
-                          shuttleBuilder: (context, child, value, _, __) => Container(),
-                          child: const SizedBox(width: 100, height: 100, child: Text('Hello')),
-                        )),
-                  if (active)
+                  // if (clicked)
+                  //   Positioned(
+                  //       top: 300,
+                  //       left: 300,
+                  //       child: MaterialHero(
+                  //         tag: 'promo',
+                  //         color: Colors.deepPurpleAccent,
+                  //         child: const SizedBox(width: 100, height: 100, child: Text('Hello')),
+                  //       )),
+                  if (clicked)
                     Positioned(
                       top: 300,
                       left: 103,
+                      width: 150,
+                      height: 75,
                       child: MaterialHero(
-                          tag: 'new_goal',
-                          key: const ValueKey('end_button'),
-                          // enabled: false,
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Container(
-                              width: 100,
-                              height: 50,
-                              color: Colors.blue,
-                              child: GestureDetector(
-                                onTap: getStarted,
-                                child: const Text('close'),
-                              ),
-                            ),
-                          )),
+                        tag: 'animals',
+                        color: Colors.redAccent,
+                        child: const BeaverBox(),
+                      ),
                     ),
                 ],
               ),
@@ -104,10 +100,9 @@ class MonthPromo extends StatelessWidget {
   }
 }
 
-class DayPromo extends StatelessWidget {
-  const DayPromo({super.key, required this.active, required this.getStarted});
+class BoxWithNestedHero extends StatelessWidget {
+  const BoxWithNestedHero({super.key, required this.active});
   final bool active;
-  final void Function() getStarted;
 
   @override
   Widget build(BuildContext context) {
@@ -116,26 +111,38 @@ class DayPromo extends StatelessWidget {
       child: SizedBox(
         height: 200,
         width: 200,
-        // child: StartButton(getStarted: getStarted),
         child: active
             ? null
             : MaterialHero(
-                tag: 'new_goal',
-                key: const ValueKey('start_button'),
-                child: StartButton(getStarted: getStarted),
+                tag: 'animals',
+                child: const AardvarkBox(),
               ),
       ),
     );
   }
 }
 
-class StartButton extends StatelessWidget {
-  const StartButton({
+class AardvarkBox extends StatelessWidget {
+  const AardvarkBox({
     super.key,
-    required this.getStarted,
   });
 
-  final void Function() getStarted;
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Container(
+        color: Colors.green,
+        child: const Text('Aardvark'),
+      ),
+    );
+  }
+}
+
+class BeaverBox extends StatelessWidget {
+  const BeaverBox({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -143,12 +150,9 @@ class StartButton extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: Container(
         width: 100,
-        height: 50,
+        height: 25,
         color: Colors.green,
-        child: GestureDetector(
-          onTap: getStarted,
-          child: const Text('open'),
-        ),
+        child: const Text('Beaver'),
       ),
     );
   }
