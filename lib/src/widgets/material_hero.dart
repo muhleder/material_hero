@@ -139,12 +139,50 @@ class MaterialHeroWithContextState extends State<MaterialHeroWithContext> with S
   }
 }
 
-Widget fadeThroughShuttleWrapper(BuildContext context, Widget child, double value, MaterialHeroController controller, ShuttleType type) {
-  return FittedBox(
-    fit: BoxFit.fitWidth,
+Widget fadeThroughShuttleWrapper(
+  BuildContext context,
+  Widget child,
+  double value,
+  MaterialHeroController controller,
+  ShuttleType type,
+) {
+  Size? fromSize = controller.fromRect?.size;
+  Size? toSize = controller.toRect?.size;
+  double scaleX;
+  double scaleY;
+  Size? childSize;
+  if (fromSize == null || toSize == null) {
+    scaleX = 1;
+    scaleY = 1;
+  } else {
+    double currentWidth = (toSize.width - fromSize.width) * controller.view.value + fromSize.width;
+    double currentHeight = (toSize.height - fromSize.height) * controller.view.value + fromSize.height;
+    switch (type) {
+      case ShuttleType.from:
+        scaleX = currentWidth / fromSize.width;
+        scaleY = currentHeight / fromSize.height;
+        childSize = fromSize;
+        break;
+      case ShuttleType.to:
+        scaleX = currentWidth / toSize.width;
+        scaleY = currentHeight / toSize.height;
+        childSize = toSize;
+        break;
+    }
+  }
+  // This isn't quite right, but is reasonably close.
+  return Transform.scale(
+    scaleX: scaleX,
+    scaleY: scaleY,
     child: Opacity(
       opacity: value,
-      child: child,
+      child: Center(
+        child: SizedBox(
+          width: childSize?.width,
+          height: childSize?.height,
+          child: child,
+        ),
+      ),
     ),
   );
 }
